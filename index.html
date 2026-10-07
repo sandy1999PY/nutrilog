@@ -27,9 +27,9 @@ button:hover:not(:disabled){border-color:var(--acc)}
 button:disabled{opacity:.6;cursor:wait}
 button.pri{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:700}
 button.sm{padding:3px 11px;border-radius:9px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
-.card h2{font-size:16px;margin:0 0 2px}
-.card .hint{font-size:13px;color:var(--mut);margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.card h2{font-size:16px;margin:0 0 10px}
+.card .hint{font-size:12px;color:var(--mut);margin:-6px 0 10px}
 .step-n{display:inline-block;background:var(--acc);color:#fff;width:22px;height:22px;border-radius:50%;text-align:center;font-size:13px;line-height:22px;margin-right:6px}
 input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;width:100%}
 input:focus{outline:2px solid var(--acc)}
@@ -57,15 +57,15 @@ nav button span{font-size:21px;line-height:1.1}
 nav button.on{color:var(--acc);font-weight:700}
 .banner{border-radius:14px;padding:12px 14px;margin-bottom:14px;font-weight:600}
 .banner.info{background:var(--info2);color:var(--info)}.banner.warn{background:var(--warn2);color:var(--warn)}.banner.bad{background:var(--bad2);color:var(--bad)}.banner.ok{background:var(--acc2);color:var(--acc)}
-.ring{position:relative;width:200px;height:200px;margin:4px auto 10px}
+.ring{position:relative;width:190px;height:190px;margin:0 auto 10px}
 .ring svg{transform:rotate(-90deg)}
 .ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring .big{font-size:36px;font-weight:800;line-height:1}
 .ring .sub{font-size:12px;color:var(--mut)}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;text-align:center}
 .three div{background:var(--bg);border-radius:12px;padding:8px 4px}
 .three b{display:block;font-size:18px}.three small{color:var(--mut);font-size:12px}
-.nut{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.nut{display:flex;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
 .nut:first-of-type{border-top:0}
 .nut .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
 .nut .body{flex:1;min-width:0}
@@ -138,32 +138,32 @@ label{font-size:12px;color:var(--mut)}
   <section class="tab" id="tab-today">
     <div id="banner"></div>
     <div class="card">
-      <h2>Protein</h2><p class="hint">Builds and repairs muscle. Eaten so far compared with your daily protein goal.</p>
+      <h2>Protein</h2>
       <div id="pring"></div>
       <div class="three" id="pstats"></div>
     </div>
     <div class="card">
-      <h2>Calories</h2><p class="hint">How much you have eaten compared with your daily goal.</p>
+      <h2>Calories left today</h2>
       <div id="ring"></div>
       <div class="three" id="calstats"></div>
       <div id="notifBox" style="margin-top:10px"></div>
     </div>
-    <div class="card"><h2>Carbs &amp; fat</h2><p class="hint">Carbs are your main energy source. Keep fat moderate.</p><div id="main"></div>
+    <div class="card"><h2>Carbs &amp; fat</h2><div id="main"></div>
       <div class="split" id="split"></div><div class="legend" id="legend"></div></div>
-    <div class="card"><h2>Other nutrients</h2><p class="hint">Fibre is good to get enough of. Keep sugar and sodium (salt) under the limit.</p><div id="other"></div></div>
+    <div class="card"><h2>Other nutrients</h2><div id="other"></div></div>
     <div class="card">
-      <h2>⚙️ Goals &amp; limits</h2><p class="hint">Change any daily goal or limit. Reset puts everything back to the default (2000 kcal, other values worked out from it).</p>
+      <h2>⚙️ Goals &amp; limits</h2><p class="hint">Change any goal or limit. Reset restores the defaults.</p>
       <div class="f2" id="limGrid"></div>
       <div class="row"><button class="pri" id="limSave">Save all</button><button id="limReset">Reset all to default</button></div>
       <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
         <b>🤖 AI food estimates (optional)</b>
-        <p class="hint" style="margin-top:4px">Paste your Anthropic API key so foods not in the built-in list are estimated by Claude. The key stays in this browser only and is sent directly to Anthropic. Don't use this on a shared device.</p>
+        <p class="hint" style="margin:4px 0 8px">Paste your Anthropic key to estimate unknown foods with AI. Stored only on this device.</p>
         <div class="goalrow" style="margin-top:0"><input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off" style="max-width:none;flex:1;min-width:160px"><button id="keySave">Save key</button><button id="keyRemove">Remove</button></div>
         <div class="note" id="keyState" style="text-align:left"></div>
       </div>
       <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
         <b>💾 Backup &amp; restore</b>
-        <p class="hint" style="margin-top:4px">Your data is saved on this device, in this browser. Download a backup now and then. You can also use it to move your data to another phone or computer.</p>
+        <p class="hint" style="margin:4px 0 8px">Download a copy of your data, or restore one.</p>
         <div class="row"><button id="exportBtn">⬇️ Download backup</button><label class="chip" style="cursor:pointer;border:1px solid var(--line);color:var(--ink);font-size:16px;padding:9px 14px;border-radius:12px;background:var(--card)">⬆️ Restore backup<input id="importFile" type="file" accept="application/json,.json" hidden></label></div>
         <div class="note" id="backupState" style="text-align:left"></div>
       </div>
@@ -173,7 +173,6 @@ label{font-size:12px;color:var(--mut)}
         <button id="signOutBtn" hidden>Sign out</button>
       </div>
     </div>
-    <p class="note">Default targets are estimated from your calorie goal. Past days keep the calorie goal that applied on that day.</p>
   </section>
 
   <!-- TAB 2: ADD FOOD -->
@@ -183,17 +182,16 @@ label{font-size:12px;color:var(--mut)}
       <div class="pills" id="mealPills"></div>
     </div>
     <div class="card" id="savedCard">
-      <h2>⭐ Saved meals</h2><p class="hint">Eat the same thing often? Tap <b>Add</b> to log a whole saved meal in one go, to the meal chosen above.</p>
+      <h2>⭐ Saved meals</h2>
       <div id="savedList"></div>
     </div>
     <div class="card">
       <h2><span class="step-n">2</span>Or type what you ate</h2>
-      <p class="hint">One food per row. Quantity can be a number (2), a unit (1 katori, 1 glass) or grams (150g). Leave it empty for 1 serving. <b>Know the macros?</b> Tap ✏️ on a row to type them yourself. Otherwise I use the food database, then AI.</p>
+      <p class="hint">Quantity: <i>2</i>, <i>1 katori</i> or <i>150g</i>. Tap ✏️ to type macros yourself.</p>
       <div class="irow h"><span>Item</span><span>Quantity</span><span title="Enter macros yourself">Macros</span><span></span></div>
       <div id="rows"></div>
       <button class="chip" id="addRow">+ Add another item</button>
-      <p class="hint" style="margin:12px 0 6px">Quick add:</p>
-      <div class="row" id="quick"></div>
+      <div class="row" id="quick" style="margin-top:10px"></div>
       <button class="pri big-btn" id="addBtn">3 · Add to my log</button>
       <div id="pending"></div>
       <div id="added"></div>
@@ -209,11 +207,10 @@ label{font-size:12px;color:var(--mut)}
     <div class="card">
       <div class="calhead"><button id="mPrev" aria-label="Previous month">‹</button><b id="calTitle"></b><button id="mNext" aria-label="Next month">›</button></div>
       <div class="calgrid" id="calGrid"></div>
-      <div class="calkey"><span><b style="background:var(--acc2)"></b>Target hit (90–110%)</span><span><b style="background:var(--warn2)"></b>Close (70–90%)</span><span><b style="background:var(--bad2)"></b>Below 70% or over 110%</span><span><b style="background:var(--bg);border:1px solid var(--line)"></b>No data</span></div>
-      <p class="hint" style="margin:10px 0 0">Tap any day to see or edit its meals. Numbers are calories.</p>
+      <div class="calkey"><span><b style="background:var(--acc2)"></b>On target</span><span><b style="background:var(--warn2)"></b>Close</span><span><b style="background:var(--bad2)"></b>Low / over</span><span><b style="background:var(--bg);border:1px solid var(--line)"></b>No data</span></div>
       <div class="stats" id="mstats"></div>
     </div>
-    <div class="card"><h2>Last 7 days</h2><p class="hint">Bars are calories per day. The dashed line is your goal.</p><div id="week"></div><div class="stats" id="wstats"></div></div>
+    <div class="card"><h2>Last 7 days</h2><div id="week"></div><div class="stats" id="wstats"></div></div>
   </section>
 </div>
 
@@ -236,7 +233,7 @@ label{font-size:12px;color:var(--mut)}
 
 <dialog id="edDlg">
   <h3 style="margin:0 0 2px">Edit item ✏️</h3>
-  <p class="hint" style="margin:0 0 4px">Macros are the <b>total</b> for the quantity below. Changing the quantity rescales them.</p>
+  <p class="hint" style="margin:0 0 4px">Macros are totals for the quantity.</p>
   <div class="f2">
     <div style="grid-column:1/-1"><label>Name</label><input id="ed_name"></div>
     <div><label>Quantity</label><input id="ed_qty" type="number" step="any" min="0.01"></div>
@@ -255,7 +252,7 @@ label{font-size:12px;color:var(--mut)}
 <dialog id="smDlg">
   <h3 style="margin:0 0 4px">Edit saved meal ⭐</h3>
   <label>Meal name</label><input id="sm_name" maxlength="40">
-  <p class="hint" style="margin:10px 0 0">Change quantities (macros rescale), edit the macros directly, remove items, or add new ones. For a new item, leave calories empty to look it up in the food database.</p>
+  <p class="hint" style="margin:8px 0 0">Edit, remove or add items. For a new item, leave calories empty to look it up.</p>
   <div id="smRows"></div>
   <button class="chip" id="smAdd" style="margin-top:8px">+ Add item</button>
   <div class="row" style="justify-content:flex-end;margin-top:12px"><button id="sm_cancel">Cancel</button><button class="pri" id="sm_save">Save meal</button></div>
@@ -500,7 +497,7 @@ function levelOf(pct){return pct>=100?3:pct>=90?2:pct>=75?1:0}
 // ---------- state & storage ----------
 // ---------- storage: cloud (Firebase, per Google account) or this browser only ----------
 // To turn on cloud sync, replace the placeholders below with your Firebase web-app config (see README).
-const CFG={apiKey:'AIzaSyBrH0IiSdR6LP1zkyLn-Sodr7eT011oCbA',authDomain:'nutrilog-39a80.firebaseapp.com',projectId:'nutrilog-39a80',appId:'1:987430663491:web:3691022b74f30ae0b7abf6'};
+const CFG={apiKey:'AIzaSyBrH0IiSdR6LP1zkyLn-Sodr7eT011oCbA',authDomain:'nutrilog-39a80.web.app',projectId:'nutrilog-39a80',appId:'1:987430663491:web:3691022b74f30ae0b7abf6'};
 const CLOUD=!/^YOUR_/.test(CFG.apiKey);
 const SK='nutrilog_v1',KEYSTORE='nutrilog_apikey';
 let mem=null,saveWarned=false,persisted=null,fb=null,uid=null,me=null,cloudReady=false;
@@ -569,7 +566,7 @@ function checkAlert(before){const after=levelOf(pct(cur));if(after>before&&isTod
 function resetRows(){$('#rows').innerHTML='';for(let i=0;i<3;i++)addRow()}
 function addRow(item,qty){
   const d=document.createElement('div');d.className='irow';
-  d.innerHTML='<input class="it" list="foodlist" placeholder="e.g. roti" autocomplete="off" aria-label="Item"><input class="qt" placeholder="e.g. 2 or 1 katori" autocomplete="off" aria-label="Quantity"><button class="sm tg" title="Enter macros myself" aria-label="Enter macros myself">✏️</button><button class="sm rm" aria-label="Remove row">✕</button><div class="mac" hidden><div class="mh">Type the <b>total</b> for this item (calories required). Leave calories empty to use the database / AI instead.</div><div class="mgrid">'+[['k','Calories'],['p','Protein g'],['c','Carbs g'],['f','Fat g'],['fi','Fibre g'],['s','Sugar g'],['na','Sodium mg']].map(([k,n])=>'<div><label>'+n+'</label><input class="m_'+k+'" type="number" min="0" step="any" inputmode="decimal"></div>').join('')+'</div></div>';
+  d.innerHTML='<input class="it" list="foodlist" placeholder="e.g. roti" autocomplete="off" aria-label="Item"><input class="qt" placeholder="e.g. 2 or 1 katori" autocomplete="off" aria-label="Quantity"><button class="sm tg" title="Enter macros myself" aria-label="Enter macros myself">✏️</button><button class="sm rm" aria-label="Remove row">✕</button><div class="mac" hidden><div class="mh">Totals for this item. Calories required.</div><div class="mgrid">'+[['k','Calories'],['p','Protein g'],['c','Carbs g'],['f','Fat g'],['fi','Fibre g'],['s','Sugar g'],['na','Sodium mg']].map(([k,n])=>'<div><label>'+n+'</label><input class="m_'+k+'" type="number" min="0" step="any" inputmode="decimal"></div>').join('')+'</div></div>';
   d.querySelector('.tg').onclick=()=>{const m=d.querySelector('.mac');m.hidden=!m.hidden;d.querySelector('.tg').classList.toggle('on',!m.hidden);if(!m.hidden)d.querySelector('.m_k').focus()};
   d.querySelector('.it').value=item||'';d.querySelector('.qt').value=qty||'';
   d.querySelector('.rm').onclick=()=>{if($('#rows').children.length>1)d.remove();else resetRows()};
@@ -685,20 +682,20 @@ function nutRow(icon,name,why,val,unit,target,color,limit){
   const w=Math.min(val/target*100,100),over=limit&&val>target,p=Math.round(val/target*100);
   const tag=limit?(over?'<span class="tag" style="background:var(--bad2);color:var(--bad)">Over limit</span>':p>=80?'<span class="tag" style="background:var(--warn2);color:var(--warn)">Near limit</span>':'<span class="tag" style="background:var(--acc2);color:var(--acc)">OK</span>')
     :(p>=100?'<span class="tag" style="background:var(--acc2);color:var(--acc)">Target met</span>':'');
-  return `<div class="nut"><div class="ic" style="background:${color}22">${icon}</div><div class="body"><div class="top"><span class="nm">${name}${tag}</span><span class="val">${unit==='mg'?Math.round(val):fmt(val)}<small> / ${target} ${unit}</small></span></div><div class="bar"><i style="width:${w}%;background:${over?'var(--bad)':color}"></i></div><div class="why">${why} · ${p}% of ${limit?'limit':'target'}</div></div></div>`}
-function ringHtml(p,color,label){const R=82,C=2*Math.PI*R,off=C*(1-Math.min(p,100)/100);
-  return `<div class="ring"><svg width="200" height="200"><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--line)" stroke-width="16"/><circle cx="100" cy="100" r="${R}" fill="none" stroke="${color}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset .5s"/></svg><div class="mid"><div class="big">${Math.round(p)}%</div><div class="sub">${label}</div></div></div>`}
-
+  return `<div class="nut"><div class="ic" style="background:${color}22">${icon}</div><div class="body"><div class="top"><span class="nm">${name}${tag}</span><span class="val">${unit==='mg'?Math.round(val):fmt(val)}<small> / ${target} ${unit}</small></span></div><div class="bar"><i style="width:${w}%;background:${over?'var(--bad)':color}"></i></div></div></div>`}
+function ringHtml(fill,color,big,label){const R=78,C=2*Math.PI*R,off=C*(1-Math.max(0,Math.min(fill,100))/100);
+  return `<div class="ring"><svg width="190" height="190" viewBox="0 0 200 200"><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--line)" stroke-width="16"/><circle cx="100" cy="100" r="${R}" fill="none" stroke="${color}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset .5s"/></svg><div class="mid"><div class="big" style="color:${color}">${big}</div><div class="sub">${label}</div></div></div>`}
 function renderToday(){
   const es=dayEntries(cur),t=totals(es),g=G(),p=t.k/g*100,l=levelOf(p),T=targets(g);
   let b='';
   if(l>0){const a=alertText(l,t);b=`<div class="banner ${l===1?'info':l===2?'warn':'bad'}">${l===3?'🚨':l===2?'⚠️':'🔔'} ${a.m}</div>`}
   $('#banner').innerHTML=b;
   const cc=colorAt(p,CAL_STOPS);
-  $('#ring').innerHTML=ringHtml(p,cc,'of daily goal');
-  $('#calstats').innerHTML=`<div><b>${g}</b><small>Goal</small></div><div><b style="color:${cc}">${Math.round(t.k)}</b><small>Eaten</small></div><div><b>${Math.abs(Math.round(g-t.k))}</b><small>${t.k<=g?'Left':'Over'}</small></div>`;
+  const left=g-t.k;
+  $('#ring').innerHTML=ringHtml(Math.max(0,100-p),cc,Math.abs(Math.round(left)),left>=0?'kcal left':'kcal over');
+  $('#calstats').innerHTML=`<div><b>${g}</b><small>Limit</small></div><div><b>${Math.round(t.k)}</b><small>Eaten</small></div>`;
   const pp=t.p/T.p*100,pc=colorAt(pp,PRO_STOPS);
-  $('#pring').innerHTML=ringHtml(pp,pc,'of protein goal');
+  $('#pring').innerHTML=ringHtml(pp,pc,Math.round(pp)+'%','of protein goal');
   $('#pstats').innerHTML=`<div><b>${T.p}g</b><small>Goal</small></div><div><b style="color:${pc}">${fmt(t.p)}g</b><small>Eaten</small></div><div><b>${fmt(Math.abs(T.p-t.p))}g</b><small>${t.p<T.p?'To go':'Extra'}</small></div>`;
   const TS=targets(S.goal);
   const LIMS=[['k','Calories (kcal)',S.goal],['p','Protein (g)',TS.p],['c','Carbs (g)',TS.c],['f','Fat limit (g)',TS.f],['fi','Fibre (g)',TS.fi],['s','Sugar limit (g)',TS.s],['na','Sodium limit (mg)',TS.na]];
@@ -718,7 +715,7 @@ function renderAdd(){
   $('#addDay').textContent='Adding to: '+(isToday()?'Today':cur.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'}));
   $('#mealPills').innerHTML=MEALS.map(([m,i])=>`<button class="pill ${m===meal?'on':''}" data-m="${m}">${i}<br>${m}</button>`).join('');
   document.querySelectorAll('#mealPills .pill').forEach(b=>b.onclick=()=>{meal=b.dataset.m;renderAdd()});
-  $('#pending').innerHTML=pending.length?`<div class="pending"><b>I couldn't find these foods:</b>${pending.map((p,i)=>`<div class="row" style="margin-top:8px;justify-content:space-between"><span>“${p.text}”</span><span><button class="sm" data-i="${i}" data-a="cust">Add details</button> <button class="sm" data-i="${i}" data-a="skip">Skip</button></span></div>`).join('')}${S.apiKey?'':'<div style="margin-top:8px;font-size:12px">Tip: add an API key under Today → Goals &amp; limits to let AI estimate these automatically.</div>'}</div>`:'';
+  $('#pending').innerHTML=pending.length?`<div class="pending"><b>I couldn't find these foods:</b>${pending.map((p,i)=>`<div class="row" style="margin-top:8px;justify-content:space-between"><span>“${p.text}”</span><span><button class="sm" data-i="${i}" data-a="cust">Add details</button> <button class="sm" data-i="${i}" data-a="skip">Skip</button></span></div>`).join('')}${S.apiKey?'':'<div style="margin-top:8px;font-size:12px">Tip: add an API key (Today → Goals &amp; limits) for AI estimates.</div>'}</div>`:'';
   $('#pending').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const i=+btn.dataset.i;if(btn.dataset.a==='skip'){pending.splice(i,1);renderAdd()}else openDlg(i)});
   $('#savedList').innerHTML=S.saved.length?S.saved.map(m=>{const k=m.items.reduce((a,i)=>a+i.per.k*i.qty,0);return `<div class="entry"><div class="n">${m.name} <span style="color:var(--mut);font-weight:400">· ${Math.round(k)} kcal</span></div><div class="d">${m.items.map(i=>fq(i.qty)+' '+i.name.split(' / ')[0]).join(', ')}</div><div class="ctl"><button class="pri sm" data-add="${m.id}">＋ Add to ${meal}</button><span><button class="sm" data-edit="${m.id}" aria-label="Edit saved meal">✏️ Edit</button> <button class="sm" data-del="${m.id}" aria-label="Delete saved meal">🗑</button></span></div></div>`}).join(''):'<div class="empty" style="padding:8px">No saved meals yet. Add food below, then tap “Save as meal”.</div>';
   $('#savedList').querySelectorAll('button[data-add]').forEach(b=>b.onclick=()=>addSaved(b.dataset.add));
