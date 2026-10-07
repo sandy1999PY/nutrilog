@@ -40,7 +40,7 @@ input:focus{outline:2px solid var(--acc)}
 .chip{border-radius:999px;padding:6px 12px;font-size:13px}
 .big-btn{width:100%;padding:14px;font-size:17px;margin-top:12px}
 /* item table */
-.irow{display:grid;grid-template-columns:1fr 120px 38px 38px;gap:8px;margin-bottom:8px;align-items:center}
+.irow{display:grid;grid-template-columns:1fr 104px 36px 36px;gap:8px;margin-bottom:8px;align-items:center}
 .irow.h{font-size:12px;font-weight:700;color:var(--mut);margin-bottom:4px}
 .irow .rm,.irow .tg{padding:8px 0}
 .tg.on{background:var(--acc2);border-color:var(--acc)}
@@ -91,7 +91,7 @@ nav button.on{color:var(--acc);font-weight:700}
 .pending{background:var(--warn2);border-radius:14px;padding:12px;margin-top:12px;font-size:14px}
 .added{background:var(--acc2);border-radius:14px;padding:12px;margin-top:12px}
 .added div{display:flex;justify-content:space-between;padding:2px 0}
-.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);padding:12px 18px;border-radius:12px;color:#fff;font-weight:600;box-shadow:0 8px 24px #0004;z-index:50;width:max-content;max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);padding:12px 18px;border-radius:12px;color:#fff;font-weight:600;box-shadow:0 8px 24px #0004;z-index:80;width:max-content;max-width:90vw;text-align:center}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-top:10px}
 .stats div{background:var(--bg);border-radius:12px;padding:10px 4px}.stats b{display:block;font-size:20px}.stats small{color:var(--mut);font-size:12px}
 /* calendar */
@@ -117,6 +117,16 @@ label{font-size:12px;color:var(--mut)}
 #login{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}
 #login h1{font-size:30px}
 .gbtn{max-width:320px;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff!important;color:#1f1f1f!important;border:1px solid #dadce0!important;font-weight:600}
+h1{font-size:19px!important}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto}
+.sheet-in{max-width:640px;margin:0 auto;padding:14px 14px 40px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:18px}
+.stepbar{font-size:11px;color:var(--mut);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.pills{grid-template-columns:repeat(2,1fr)!important}
+.pill{padding:16px 4px!important;font-size:16px!important}
+.erow{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.mealhead .kc{color:var(--ink)}.mealhead .kc b{font-size:16px}
+.erow .kc{font-size:14px;white-space:nowrap}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -138,7 +148,7 @@ label{font-size:12px;color:var(--mut)}
 <div class="wrap">
   <header>
     <h1>Nutri<span>Log</span> 🥗</h1>
-    <div class="date"><button id="prev" aria-label="Previous day">‹</button><span id="dateLbl"></span><button id="next" aria-label="Next day">›</button><button id="todayBtn" class="chip" hidden>Today</button></div>
+    <div class="date"><button id="prev" aria-label="Previous day">‹</button><span id="dateLbl"></span><button id="next" aria-label="Next day">›</button><button id="todayBtn" class="chip" hidden>Today</button><button id="menuBtn" aria-label="Settings" style="padding:5px 12px;font-size:18px">☰</button></div>
   </header>
 
   <!-- TAB 1: TODAY -->
@@ -158,50 +168,34 @@ label{font-size:12px;color:var(--mut)}
     <div class="card"><h2>Carbs &amp; fat</h2><div id="main"></div>
       <div class="split" id="split"></div><div class="legend" id="legend"></div></div>
     <div class="card"><h2>Other nutrients</h2><div id="other"></div></div>
-    <div class="card">
-      <h2>⚙️ Goals &amp; limits</h2><p class="hint">Change any goal or limit. Reset restores the defaults.</p>
-      <div class="f2" id="limGrid"></div>
-      <div class="row"><button class="pri" id="limSave">Save all</button><button id="limReset">Reset all to default</button></div>
-      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
-        <b>🤖 AI food estimates (optional)</b>
-        <p class="hint" style="margin:4px 0 8px">Paste your Anthropic key to estimate unknown foods with AI. Stored only on this device.</p>
-        <div class="goalrow" style="margin-top:0"><input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off" style="max-width:none;flex:1;min-width:160px"><button id="keySave">Save key</button><button id="keyRemove">Remove</button></div>
-        <div class="note" id="keyState" style="text-align:left"></div>
-      </div>
-      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
-        <b>💾 Backup &amp; restore</b>
-        <p class="hint" style="margin:4px 0 8px">Download a copy of your data, or restore one.</p>
-        <div class="row"><button id="exportBtn">⬇️ Download backup</button><label class="chip" style="cursor:pointer;border:1px solid var(--line);color:var(--ink);font-size:16px;padding:9px 14px;border-radius:12px;background:var(--card)">⬆️ Restore backup<input id="importFile" type="file" accept="application/json,.json" hidden></label></div>
-        <div class="note" id="backupState" style="text-align:left"></div>
-      </div>
-      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
-        <b>☁️ Account &amp; sync</b>
-        <div class="note" id="acctState" style="text-align:left;margin:6px 0"></div>
-        <button id="signOutBtn" hidden>Sign out</button>
-      </div>
-    </div>
   </section>
 
-  <!-- TAB 2: ADD FOOD -->
+  <!-- TAB 2: ADD FOOD (step by step) -->
   <section class="tab" id="tab-add" hidden>
-    <div class="card">
-      <h2><span class="step-n">1</span>Which meal is this?</h2><p class="hint" id="addDay"></p>
+    <div class="card" id="addS1">
+      <div class="stepbar">Step 1 of 2</div>
+      <h2>Which meal?</h2>
+      <p class="hint" id="addDay"></p>
       <div class="pills" id="mealPills"></div>
+      <button class="chip" id="openSaved" style="margin-top:14px"></button>
     </div>
-    <div class="card" id="savedCard">
-      <h2>⭐ Saved meals</h2>
-      <div id="savedList"></div>
-    </div>
-    <div class="card">
-      <h2><span class="step-n">2</span>Or type what you ate</h2>
-      <p class="hint">Quantity: <i>2</i>, <i>1 katori</i> or <i>150g</i>. Tap ✏️ to type macros yourself.</p>
+    <div class="card" id="addS2" hidden>
+      <div class="stepbar">Step 2 of 2 · <span id="mealLbl"></span></div>
+      <h2>What did you eat?</h2>
       <div class="irow h"><span>Item</span><span>Quantity</span><span title="Enter macros yourself">Macros</span><span></span></div>
       <div id="rows"></div>
       <button class="chip" id="addRow">+ Add another item</button>
       <div class="row" id="quick" style="margin-top:10px"></div>
-      <button class="pri big-btn" id="addBtn">3 · Add to my log</button>
-      <div id="pending"></div>
+      <div class="row" style="margin-top:14px;flex-wrap:nowrap"><button id="backS1">‹ Back</button><button class="pri" id="addBtn" style="flex:1">Add to my log</button></div>
+    </div>
+    <div class="card" id="addS3" hidden>
       <div id="added"></div>
+      <div id="pending"></div>
+      <div class="row" style="margin-top:14px;flex-wrap:nowrap"><button id="moreBtn">+ Add more</button><button class="pri" id="doneBtn" style="flex:1">See today</button></div>
+    </div>
+    <div class="card" id="addSaved" hidden>
+      <div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 style="margin:0">⭐ Saved meals</h2><button class="sm" id="backFromSaved">‹ Back</button></div>
+      <div id="savedList"></div>
     </div>
     <datalist id="foodlist"></datalist>
   </section>
@@ -219,6 +213,33 @@ label{font-size:12px;color:var(--mut)}
     </div>
     <div class="card"><h2>Last 7 days</h2><div id="week"></div><div class="stats" id="wstats"></div></div>
   </section>
+</div>
+
+<div id="settings" class="sheet" hidden>
+ <div class="sheet-in">
+  <div class="sheet-head"><b>⚙️ Settings</b><button id="setClose">Close ✕</button></div>
+  <div class="card">
+    <h2>Goals &amp; limits</h2>
+    <div class="f2" id="limGrid"></div>
+    <div class="row"><button class="pri" id="limSave">Save</button><button id="limReset">Reset to default</button></div>
+  </div>
+  <div class="card">
+    <h2>🤖 AI food estimates</h2>
+    <p class="hint">Paste your Anthropic key to estimate unknown foods. Stored only on this device.</p>
+    <div class="goalrow" style="margin-top:0"><input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off" style="max-width:none;flex:1;min-width:160px"><button id="keySave">Save key</button><button id="keyRemove">Remove</button></div>
+    <div class="note" id="keyState" style="text-align:left"></div>
+  </div>
+  <div class="card">
+    <h2>💾 Backup &amp; restore</h2>
+    <div class="row"><button id="exportBtn">⬇️ Download backup</button><label class="chip" style="cursor:pointer;border:1px solid var(--line);color:var(--ink);font-size:16px;padding:9px 14px;border-radius:12px;background:var(--card)">⬆️ Restore backup<input id="importFile" type="file" accept="application/json,.json" hidden></label></div>
+    <div class="note" id="backupState" style="text-align:left"></div>
+  </div>
+  <div class="card">
+    <h2>☁️ Account</h2>
+    <div class="note" id="acctState" style="text-align:left;margin:0 0 8px"></div>
+    <button id="signOutBtn" hidden>Sign out</button>
+  </div>
+ </div>
 </div>
 
 <nav><div class="in">
@@ -504,7 +525,7 @@ function levelOf(pct){return pct>=100?3:pct>=90?2:pct>=75?1:0}
 // ---------- state & storage ----------
 // ---------- storage: cloud (Firebase, per Google account) or this browser only ----------
 // To turn on cloud sync, replace the placeholders below with your Firebase web-app config (see README).
-const CFG={apiKey:'AIzaSyBrH0IiSdR6LP1zkyLn-Sodr7eT011oCbA',authDomain:'nutrilog-39a80.web.app',projectId:'nutrilog-39a80',appId:'1:987430663491:web:3691022b74f30ae0b7abf6'};
+const CFG={apiKey:'AIzaSyBrH0IiSdR6LP1zkyLn-Sodr7eT011oCbA',authDomain:'nutrilog-39a80.firebaseapp.com',projectId:'nutrilog-39a80',appId:'1:987430663491:web:3691022b74f30ae0b7abf6'};
 const CLOUD=!/^YOUR_/.test(CFG.apiKey);
 const SK='nutrilog_v1',KEYSTORE='nutrilog_apikey';
 let mem=null,saveWarned=false,persisted=null,fb=null,uid=null,me=null,cloudReady=false;
@@ -521,7 +542,7 @@ function save(){
 const S=CLOUD?Object.assign(DEF(),{apiKey:readKey()}):loadLocal();
 const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const fromIso=ds=>{const[a,b,c]=ds.split('-').map(Number);return new Date(a,b-1,c)};
-let cur=new Date(),TAB='today',pending=[],lastAdded=[],calM=new Date();calM.setDate(1);
+let addStep=1,cur=new Date(),TAB='today',pending=[],lastAdded=[],calM=new Date();calM.setDate(1);
 let meal=(()=>{const h=new Date().getHours();return h<11?'Breakfast':h<15?'Lunch':h<18?'Snacks':'Dinner'})();
 const MEALS=[['Breakfast','🌅'],['Lunch','☀️'],['Snacks','🍪'],['Dinner','🌙']];
 const customFoods=()=>S.custom.map(a=>mkFood(a,true));
@@ -570,7 +591,7 @@ async function makeAiFood(res){
 // ---------- adding ----------
 function addEntry(food,qty,mealName){const e={id:Date.now()+Math.random(),date:iso(cur),meal:mealName,name:food.name,u:food.u,qty,per:food.per,ai:!!food.ai,manual:!!food.manual};S.entries.push(e);return e}
 function checkAlert(before){const after=levelOf(pct(cur));if(after>before&&isToday()){alertLevel(after);return true}return false}
-function resetRows(){$('#rows').innerHTML='';for(let i=0;i<3;i++)addRow()}
+function resetRows(){$('#rows').innerHTML='';for(let i=0;i<2;i++)addRow()}
 function addRow(item,qty){
   const d=document.createElement('div');d.className='irow';
   d.innerHTML='<input class="it" list="foodlist" placeholder="e.g. roti" autocomplete="off" aria-label="Item"><input class="qt" placeholder="e.g. 2 or 1 katori" autocomplete="off" aria-label="Quantity"><button class="sm tg" title="Enter macros myself" aria-label="Enter macros myself">✏️</button><button class="sm rm" aria-label="Remove row">✕</button><div class="mac" hidden><div class="mh">Totals for this item. Calories required.</div><div class="mgrid">'+[['k','Calories'],['p','Protein g'],['c','Carbs g'],['f','Fat g'],['fi','Fibre g'],['s','Sugar g'],['na','Sodium mg']].map(([k,n])=>'<div><label>'+n+'</label><input class="m_'+k+'" type="number" min="0" step="any" inputmode="decimal"></div>').join('')+'</div></div>';
@@ -599,8 +620,8 @@ async function addFromRows(){
     }
     pending.push({...res,text:r.qt?r.qt+' '+r.it:r.it,meal});
   }
-  btn.disabled=false;btn.textContent='3 · Add to my log';
-  resetRows();save();fillFoodList();render();
+  btn.disabled=false;btn.textContent='Add to my log';
+  resetRows();addStep=3;save();fillFoodList();render();
   if(aiFail)toast('AI could not estimate some items ('+aiFail+'). Add details manually.','#dc2626');
   else if(checkAlert(before)){}
   else if(lastAdded.length)toast('Added to '+meal+(usedAi?' (AI estimated '+usedAi+')':'')+(manual?' ('+manual+' with your values)':''),'#16a34a');
@@ -618,7 +639,7 @@ $('#sv_name').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sv_save').cl
 function addSaved(id){const m=S.saved.find(x=>String(x.id)===String(id));if(!m)return;
   const before=levelOf(pct(cur));pending=[];lastAdded=[];
   m.items.forEach(i=>lastAdded.push(addEntry({name:i.name,u:i.u,per:i.per,ai:i.ai,manual:i.manual},i.qty,meal)));
-  save();render();if(!checkAlert(before))toast('Added “'+m.name+'” to '+meal,'#16a34a')}
+  addStep=3;save();render();if(!checkAlert(before))toast('Added “'+m.name+'” to '+meal,'#16a34a')}
 
 // ---------- edit a logged item ----------
 let edE=null;const NK=['k','p','c','f','fi','s','na'];
@@ -676,7 +697,7 @@ let tt;function toast(m,c){let el=$('.toast');if(el)el.remove();el=document.crea
 
 // ---------- tabs ----------
 function show(t){TAB=t;document.querySelectorAll('.tab').forEach(s=>s.hidden=s.id!=='tab-'+t);document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));window.scrollTo(0,0)}
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{if(b.dataset.t==='add'){addStep=1;renderAdd()}show(b.dataset.t)});
 
 // ---------- rendering ----------
 // ring colours blend smoothly with progress
@@ -719,29 +740,31 @@ function renderToday(){
 }
 
 function renderAdd(){
+  $('#addS1').hidden=addStep!==1;$('#addS2').hidden=addStep!==2;$('#addS3').hidden=addStep!==3;$('#addSaved').hidden=addStep!=='saved';
   $('#addDay').textContent='Adding to: '+(isToday()?'Today':cur.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'}));
-  $('#mealPills').innerHTML=MEALS.map(([m,i])=>`<button class="pill ${m===meal?'on':''}" data-m="${m}">${i}<br>${m}</button>`).join('');
-  document.querySelectorAll('#mealPills .pill').forEach(b=>b.onclick=()=>{meal=b.dataset.m;renderAdd()});
-  $('#pending').innerHTML=pending.length?`<div class="pending"><b>I couldn't find these foods:</b>${pending.map((p,i)=>`<div class="row" style="margin-top:8px;justify-content:space-between"><span>“${p.text}”</span><span><button class="sm" data-i="${i}" data-a="cust">Add details</button> <button class="sm" data-i="${i}" data-a="skip">Skip</button></span></div>`).join('')}${S.apiKey?'':'<div style="margin-top:8px;font-size:12px">Tip: add an API key (Today → Goals &amp; limits) for AI estimates.</div>'}</div>`:'';
-  $('#pending').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const i=+btn.dataset.i;if(btn.dataset.a==='skip'){pending.splice(i,1);renderAdd()}else openDlg(i)});
-  $('#savedList').innerHTML=S.saved.length?S.saved.map(m=>{const k=m.items.reduce((a,i)=>a+i.per.k*i.qty,0);return `<div class="entry"><div class="n">${m.name} <span style="color:var(--mut);font-weight:400">· ${Math.round(k)} kcal</span></div><div class="d">${m.items.map(i=>fq(i.qty)+' '+i.name.split(' / ')[0]).join(', ')}</div><div class="ctl"><button class="pri sm" data-add="${m.id}">＋ Add to ${meal}</button><span><button class="sm" data-edit="${m.id}" aria-label="Edit saved meal">✏️ Edit</button> <button class="sm" data-del="${m.id}" aria-label="Delete saved meal">🗑</button></span></div></div>`}).join(''):'<div class="empty" style="padding:8px">No saved meals yet. Add food below, then tap “Save as meal”.</div>';
+  $('#mealLbl').textContent=meal;
+  $('#openSaved').textContent='⭐ Use a saved meal'+(S.saved.length?' ('+S.saved.length+')':'');
+  $('#mealPills').innerHTML=MEALS.map(([m,i])=>`<button class="pill ${m===meal?'on':''}" data-m="${m}"><span style="font-size:26px">${i}</span><br>${m}</button>`).join('');
+  document.querySelectorAll('#mealPills .pill').forEach(b=>b.onclick=()=>{meal=b.dataset.m;addStep=2;renderAdd();const it=document.querySelector('#rows .it');if(it)it.focus()});
+  $('#savedList').innerHTML=S.saved.length?S.saved.map(m=>{const k=m.items.reduce((a,i)=>a+i.per.k*i.qty,0),p=m.items.reduce((a,i)=>a+i.per.p*i.qty,0);return `<div class="entry"><div class="erow"><div class="n">${m.name}</div><div class="kc"><b>${Math.round(k)}</b> kcal · <b>${fmt(p)}</b> g P</div></div><div class="d">${m.items.map(i=>fq(i.qty)+' '+i.name.split(' / ')[0]).join(', ')}</div><div class="ctl"><button class="pri sm" data-add="${m.id}">＋ Add to ${meal}</button><span><button class="sm" data-edit="${m.id}" aria-label="Edit saved meal">✏️ Edit</button> <button class="sm" data-del="${m.id}" aria-label="Delete saved meal">🗑</button></span></div></div>`}).join(''):'<div class="empty" style="padding:8px">No saved meals yet. After adding food, tap “Save as meal”.</div>';
   $('#savedList').querySelectorAll('button[data-add]').forEach(b=>b.onclick=()=>addSaved(b.dataset.add));
   $('#savedList').querySelectorAll('button[data-edit]').forEach(b=>b.onclick=()=>openSavedEdit(b.dataset.edit));
   $('#savedList').querySelectorAll('button[data-del]').forEach(b=>b.onclick=()=>{const m=S.saved.find(x=>String(x.id)===b.dataset.del);if(m&&confirm('Delete saved meal “'+m.name+'”?')){S.saved=S.saved.filter(x=>x!==m);save();renderAdd()}});
   const la=lastAdded.filter(e=>S.entries.includes(e));
-  $('#added').innerHTML=la.length?`<div class="added"><b>✅ Just added to ${la[0].meal}</b>${la.map(e=>`<div><span>${fq(e.qty)} × ${e.name}${e.ai?' <span class="tag ai">AI estimate</span>':e.manual?' <span class="tag ai">Your values</span>':''}</span><b>${Math.round(e.per.k*e.qty)} kcal</b></div>`).join('')}<div style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px"><span>Total</span><b>${Math.round(la.reduce((a,e)=>a+e.per.k*e.qty,0))} kcal</b></div><div class="row" style="margin-top:8px"><button class="sm" id="goToday">See summary</button><button class="sm" id="saveAdded">⭐ Save as meal</button></div></div>`:'';
+  $('#added').innerHTML=la.length?`<div class="added"><b>✅ Added to ${la[0].meal}</b>${la.map(e=>`<div><span>${fq(e.qty)} × ${e.name}${e.ai?' <span class="tag ai">AI</span>':''}</span><span><b>${Math.round(e.per.k*e.qty)}</b> kcal · <b>${fmt(e.per.p*e.qty)}</b> g P</span></div>`).join('')}<div style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px"><b>Total</b><span><b>${Math.round(la.reduce((a,e)=>a+e.per.k*e.qty,0))}</b> kcal · <b>${fmt(la.reduce((a,e)=>a+e.per.p*e.qty,0))}</b> g P</span></div><div class="row" style="margin-top:8px"><button class="sm" id="saveAdded">⭐ Save as meal</button></div></div>`:'';
   const sa=$('#saveAdded');if(sa)sa.onclick=()=>openSave(la,la[0].meal);
-  const gt=$('#goToday');if(gt)gt.onclick=()=>show('today');
+  $('#pending').innerHTML=pending.length?`<div class="pending"><b>I couldn't find these foods:</b>${pending.map((p,i)=>`<div class="row" style="margin-top:8px;justify-content:space-between"><span>“${p.text}”</span><span><button class="sm" data-i="${i}" data-a="cust">Add details</button> <button class="sm" data-i="${i}" data-a="skip">Skip</button></span></div>`).join('')}${S.apiKey?'':'<div style="margin-top:8px;font-size:12px">Tip: add an API key in ☰ Settings for AI estimates.</div>'}</div>`:'';
+  $('#pending').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const i=+btn.dataset.i;if(btn.dataset.a==='skip'){pending.splice(i,1);renderAdd()}else openDlg(i)});
 }
 
 function renderMeals(){
   const es=dayEntries(cur);
-  if(!es.length){$('#log').innerHTML=`<div class="card"><div class="empty">🍽️<br>No food logged for ${isToday()?'today':'this day'}.<br><br><button class="pri" id="goAdd">Add food</button></div></div>`;$('#goAdd').onclick=()=>show('add');return}
+  if(!es.length){$('#log').innerHTML=`<div class="card"><div class="empty">🍽️<br>No food logged for ${isToday()?'today':'this day'}.<br><br><button class="pri" id="goAdd">Add food</button></div></div>`;$('#goAdd').onclick=()=>{addStep=1;renderAdd();show('add')};return}
   $('#log').innerHTML=MEALS.map(([m,ic])=>{
     const L=es.filter(e=>e.meal===m);if(!L.length)return '';const mt=totals(L);
-    return `<div class="card"><div class="mealhead"><b>${ic} ${m}</b><span><b style="color:var(--ink)">${Math.round(mt.k)}</b> kcal</span></div><div class="hint" style="margin:2px 0 6px">Protein ${fmt(mt.p)}g · Carbs ${fmt(mt.c)}g · Fat ${fmt(mt.f)}g <button class="sm" data-save="${m}" style="margin-left:6px">⭐ Save as meal</button></div>`+L.map(e=>{
+    return `<div class="card"><div class="mealhead"><b>${ic} ${m}</b><span class="kc"><b>${Math.round(mt.k)}</b> kcal · <b>${fmt(mt.p)}</b> g protein</span></div><div class="hint" style="margin:2px 0 4px">Carbs ${fmt(mt.c)}g · Fat ${fmt(mt.f)}g <button class="sm" data-save="${m}" style="margin-left:6px">⭐ Save as meal</button></div>`+L.map(e=>{
       const st=e.u==='piece'||e.u==='slice'?1:.5;
-      return `<div class="entry"><div class="n">${e.name}${e.ai?' <span class="tag ai">AI estimate</span>':e.manual?' <span class="tag ai">Your values</span>':''}</div><div class="d">Protein ${fmt(e.per.p*e.qty)}g · Carbs ${fmt(e.per.c*e.qty)}g · Fat ${fmt(e.per.f*e.qty)}g</div><div class="ctl"><div class="step"><button class="sm" data-a="dec" data-id="${e.id}" data-st="${st}">−</button><span><b>${fq(e.qty)}</b> ${e.u}</span><button class="sm" data-a="inc" data-id="${e.id}" data-st="${st}">+</button></div><div class="step"><span class="kc">${Math.round(e.per.k*e.qty)} kcal</span><button class="sm" data-ed="${e.id}" aria-label="Edit item">✏️</button><button class="sm" data-a="del" data-id="${e.id}" aria-label="Remove">🗑</button></div></div></div>`}).join('')+'</div>'}).join('');
+      return `<div class="entry"><div class="erow"><div class="n">${e.name}${e.ai?' <span class="tag ai">AI estimate</span>':e.manual?' <span class="tag ai">Your values</span>':''}</div><div class="kc"><b>${Math.round(e.per.k*e.qty)}</b> kcal · <b>${fmt(e.per.p*e.qty)}</b> g P</div></div><div class="d">Carbs ${fmt(e.per.c*e.qty)}g · Fat ${fmt(e.per.f*e.qty)}g</div><div class="ctl"><div class="step"><button class="sm" data-a="dec" data-id="${e.id}" data-st="${st}">−</button><span><b>${fq(e.qty)}</b> ${e.u}</span><button class="sm" data-a="inc" data-id="${e.id}" data-st="${st}">+</button></div><div class="step"><button class="sm" data-ed="${e.id}" aria-label="Edit item">✏️</button><button class="sm" data-a="del" data-id="${e.id}" aria-label="Remove">🗑</button></div></div></div>`}).join('')+'</div>'}).join('');
   $('#log').querySelectorAll('button[data-a]').forEach(btn=>btn.onclick=()=>{
     const e=S.entries.find(x=>String(x.id)===btn.dataset.id);if(!e)return;const a=btn.dataset.a,st=+btn.dataset.st,before=levelOf(pct(cur));
     if(a==='del')S.entries=S.entries.filter(x=>x!==e);
@@ -809,6 +832,13 @@ $('#quick').innerHTML=[['roti','1'],['dal','1 katori'],['rice','1 katori'],['sab
 document.querySelectorAll('#quick .chip').forEach(b=>b.onclick=()=>quickAdd(b.dataset.i,b.dataset.q));
 $('#addRow').onclick=()=>{addRow();$('#rows').lastElementChild.querySelector('.it').focus()};
 $('#addBtn').onclick=addFromRows;
+$('#openSaved').onclick=()=>{addStep='saved';renderAdd()};
+$('#backS1').onclick=()=>{addStep=1;renderAdd()};
+$('#backFromSaved').onclick=()=>{addStep=1;renderAdd()};
+$('#moreBtn').onclick=()=>{addStep=2;renderAdd();const it=document.querySelector('#rows .it');if(it)it.focus()};
+$('#doneBtn').onclick=()=>{addStep=1;renderAdd();show('today')};
+$('#menuBtn').onclick=()=>{$('#settings').hidden=false;$('#settings').scrollTop=0;document.body.style.overflow='hidden'};
+$('#setClose').onclick=()=>{$('#settings').hidden=true;document.body.style.overflow=''};
 $('#prev').onclick=()=>{cur.setDate(cur.getDate()-1);render()};
 $('#next').onclick=()=>{cur.setDate(cur.getDate()+1);render()};
 $('#todayBtn').onclick=()=>{cur=new Date();render()};
