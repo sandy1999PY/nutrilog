@@ -160,12 +160,17 @@ h1{font-size:19px!important}
       <div class="three" id="pstats"></div>
     </div>
     <div class="card">
-      <h2>Calories left today</h2>
+      <h2>Calories</h2>
       <div id="ring"></div>
       <div class="three" id="calstats"></div>
       <div id="notifBox" style="margin-top:10px"></div>
     </div>
-    <div class="card"><h2>Carbs &amp; fat</h2><div id="main"></div>
+    <div class="card">
+      <h2>Fat</h2>
+      <div id="fring"></div>
+      <div class="three" id="fstats"></div>
+    </div>
+    <div class="card"><h2>Carbs</h2><div id="main"></div>
       <div class="split" id="split"></div><div class="legend" id="legend"></div></div>
     <div class="card"><h2>Other nutrients</h2><div id="other"></div></div>
   </section>
@@ -720,8 +725,11 @@ function renderToday(){
   $('#banner').innerHTML=b;
   const cc=colorAt(p,CAL_STOPS);
   const left=g-t.k;
-  $('#ring').innerHTML=ringHtml(Math.max(0,100-p),cc,Math.abs(Math.round(left)),left>=0?'kcal left':'kcal over');
+  $('#ring').innerHTML=ringHtml(Math.min(p,100),cc,Math.abs(Math.round(left)),left>=0?'kcal left':'kcal over');
   $('#calstats').innerHTML=`<div><b>${g}</b><small>Limit</small></div><div><b>${Math.round(t.k)}</b><small>Eaten</small></div>`;
+  const pf=t.f/T.f*100,fc=colorAt(pf,CAL_STOPS),fleft=T.f-t.f;
+  $('#fring').innerHTML=ringHtml(Math.min(pf,100),fc,fmt(Math.abs(fleft)),fleft>=0?'g fat left':'g fat over');
+  $('#fstats').innerHTML=`<div><b>${T.f}g</b><small>Limit</small></div><div><b>${fmt(t.f)}g</b><small>Eaten</small></div>`;
   const pp=t.p/T.p*100,pc=colorAt(pp,PRO_STOPS);
   $('#pring').innerHTML=ringHtml(pp,pc,Math.round(pp)+'%','of protein goal');
   $('#pstats').innerHTML=`<div><b>${T.p}g</b><small>Goal</small></div><div><b style="color:${pc}">${fmt(t.p)}g</b><small>Eaten</small></div><div><b>${fmt(Math.abs(T.p-t.p))}g</b><small>${t.p<T.p?'To go':'Extra'}</small></div>`;
@@ -732,7 +740,7 @@ function renderToday(){
   $('#keyState').textContent=S.apiKey?'AI estimates are ON (key saved in this browser).':'AI estimates are OFF. Unknown foods will ask you for nutrition values.';
   $('#notifBox').innerHTML=('Notification' in window&&!S.notify&&Notification.permission!=='denied')?`<button class="chip" id="notifBtn">🔔 Also send phone/browser notifications</button>`:'';
   const nb=$('#notifBtn');if(nb)nb.onclick=()=>Notification.requestPermission().then(r=>{if(r==='granted'){S.notify=true;save();toast('Notifications on','#16a34a');render()}});
-  $('#main').innerHTML=nutRow('🍚','Carbs','Main energy source',t.c,'g',T.c,'var(--c)',false)+nutRow('🧈','Fat','Keep it moderate',t.f,'g',T.f,'var(--f)',true);
+  $('#main').innerHTML=nutRow('🍚','Carbs','Main energy source',t.c,'g',T.c,'var(--c)',false);
   $('#other').innerHTML=nutRow('🌾','Fibre','Good for digestion',t.fi,'g',T.fi,'var(--fi)',false)+nutRow('🍬','Sugar','Try to stay under',t.s,'g',T.s,'var(--s)',true)+nutRow('🧂','Sodium (salt)','Try to stay under',t.na,'mg',T.na,'var(--na)',true);
   const kp=t.p*4,kc=t.c*4,kf=t.f*9,sum=kp+kc+kf||1;
   $('#split').innerHTML=es.length?`<i style="width:${kp/sum*100}%;background:var(--p)"></i><i style="width:${kc/sum*100}%;background:var(--c)"></i><i style="width:${kf/sum*100}%;background:var(--f)"></i>`:`<i style="width:100%;background:var(--line)"></i>`;
